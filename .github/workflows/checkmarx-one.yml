@@ -50,6 +50,11 @@ jobs:
           project_name: vulnerable-code-github-actions 
           cx_tenant: ${{ secrets.CX_TENANT }} # This should be replaced by your tenant for Checkmarx One
           additional_params: --scan-types sast,sca,kics --report-format sarif --output-path .
+
+      - name: Fix SARIF levels
+        run: |
+          sed -i 's/"level": ""/"level": "warning"/g' cx_result.sarif
+
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
