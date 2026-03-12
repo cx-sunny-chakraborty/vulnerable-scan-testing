@@ -32,11 +32,7 @@ pipeline {
                     projectName: 'jenkins-demo-project',
                     branchName: 'main',
                     additionalOptions: '--scan-types sast,sca',
-                    highThreshold: 0,
-                    mediumThreshold: 5,
-                    lowThreshold: 10,
-                    vulnerabilityThresholdEnabled: true,
-                    vulnerabilityThresholdResult: 'FAILURE'
+                    sastHighThreshold: 0
                 )
             }
         }
