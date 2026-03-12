@@ -31,8 +31,7 @@ pipeline {
                 checkmarxASTScanner(
                     projectName: 'jenkins-demo-project',
                     branchName: 'main',
-                    additionalOptions: '--scan-types sast,sca',
-                    sastHighThreshold: 0
+                    additionalOptions: '--scan-types sast,sca --threshold sast-high=0'
                 )
             }
         }
