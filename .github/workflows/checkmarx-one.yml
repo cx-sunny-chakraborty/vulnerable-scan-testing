@@ -51,9 +51,24 @@ jobs:
           cx_tenant: ${{ secrets.CX_TENANT }} # This should be replaced by your tenant for Checkmarx One
           additional_params: --scan-types sast,sca,kics --report-format summaryHTML --output-path .
           
-      - name: Upload Report
-        uses: actions/upload-artifact@v4
+      - name: Fix SARIF levels
         if: always()
+        run: |
+          python3 -c "
+          import json
+          with open('cx_result.sarif') as f:
+              data = json.load(f)
+          valid = ['none','note','warning','error']
+          for run in data.get('runs', []):
+              for result in run.get('results', []):
+                  if result.get('level','') not in valid:
+                      result['level'] = 'warning'
+          with open('cx_result.sarif', 'w') as f:
+              json.dump(data, f, indent=2)
+          "
+
+      - name: Upload SARIF file
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          name: checkmarx-report
-          path: "*.pdf"
+          sarif_file: cx_result.sarif
