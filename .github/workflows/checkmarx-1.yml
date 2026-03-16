@@ -45,6 +45,7 @@ jobs:
       
       - name: Fix SARIF severity levels
         run: |
+          chmod 644 cx_result.sarif
           python3 << 'EOF'
           import json
           
